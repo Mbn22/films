@@ -3,45 +3,49 @@ import './App.css';
 import AddMovie from './components/AddMovie';
 import MoviesList from './components/MoviesList'
 import Filter from './components/Filter';
+import Home from './components/Home';
 import {  useState } from 'react';
-
-
-function useVisible(initialvalue=false){
-  const [visibleF, setvisible]= useState(initialvalue)
-  const changeValue = ()=> setvisible((v)=>!v);
-  return [visibleF,changeValue]
-}
-
-
-
-
-
+import { BrowserRouter, Route, Link, Router, Switch } from "react-router-dom";
+import MovieCard from './components/MovieCard';
+import MovieDescription from './components/MovieDescription'
 
 function App() {
-  const[movies,setmovies]=useState([{title:"12film1",description:"film1",posterURL:"film1",rating:"film1" },{title:"film2",description:"film2",posterURL:"film2",rating:"film2" }])
-  const [filterText,setfilterText]= useState('') ;  
-  const moviesfilter = movies.filter(el=>el.title.includes(filterText));
-  const [title,settitle]= useState('')
-  const [description,setdescription]= useState('')
-  const [posterURL,setposterURL]= useState('')
-  const [rating,setrating]= useState('')
-  console.log(title,description,posterURL,rating)
-  const addMovie=() => {
-    if((title==='')||(description==='')||(posterURL==='')||(rating===''))
-    alert("merci de  bien remplisre le formulaire")
-    else
-    setmovies(movies.concat({title:title,description:description,posterURL:posterURL,rating:rating}));
-}
-   return ( 
-    <div className="App">
-   <Filter movies={movies} searchfonction={(e)=> {setfilterText(()=>e.target.value) }} />
-   <div className="listMovies">
-   <MoviesList movies={moviesfilter}  />
-   <AddMovie settitle={(e)=>settitle(e.target.value)} setdescription={(e)=>setdescription(e.target.value)} setposterURL={(e)=>setposterURL(e.target.value)} setrating={(e)=>setrating(e.target.value)} addMovie={addMovie} />
-   </div>
-   <button variant="primary"  onClick={addMovie} > Ajouter</button>
-   </div>
-  );
+  
+   const Movies=[
+      {id : 1,
+         title:"Forrest Gump",
+      description:"Quelques décennies d'histoire américaine, des années 1940 à la fin du XXème siècle, à travers le regard et l'étrange odyssée d'un homme simple et pur, Forrest Gump.",
+      posterURL:"https://www.youtube.com/watch?v=bLvqoHBptjg&ab_channel=ParamountMovies",
+      rating:"⭐⭐⭐⭐⭐" 
+      },
+      {id : 2,
+         title:"La Liste de Schindler",
+      description:"Evocation des années de guerre d'Oskar Schindler, industriel autrichien rentré à Cracovie en 1939 avec les troupes allemandes. Il va, tout au long de la guerre, protéger des juifs en les faisant travailler dans sa fabrique.",
+      posterURL:"https://www.youtube.com/watch?v=ONWtyxzl-GE&ab_channel=UniversalPicturesFrance",
+      rating:"⭐⭐⭐⭐"
+       },
+   {id : 3,
+      title:"Le Parrain",
+   description:"En 1945, à New York, les Corleone sont une des cinq familles de la mafia. Don Vito Corleone marie sa fille à un bookmaker. Sollozzo, " ,
+   parrain:" de la famille Tattaglia, propose à Don Vito une association dans le trafic de drogue...",
+   posterURL:"https://www.youtube.com/watch?v=sY1S34973zA&ab_channel=Fan-MadeFilmTrailers",
+   rating:"⭐⭐⭐⭐⭐" 
+}]
+   return (
+   <BrowserRouter>
+   <Switch>
+   <Route path="/" >
+      <Home Movies={Movies}/>
+      </Route>
+   <Route path="/Ajouter-un-film" component={AddMovie} />
+   <Route path="/Rechercher" component={Filter} />
+   <Route path="/MovieCard" component={MovieCard} />
+   <Route path="/MovieDescription/:id" component={MovieDescription}/>
+      {/* <MovieDescription Movies={Movies} />
+      </Route> */}
+  </Switch>
+   </BrowserRouter>
+   );
 }
 
 export default App;
